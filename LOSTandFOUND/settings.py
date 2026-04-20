@@ -42,9 +42,15 @@ load_env_file(BASE_DIR / ".env")
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-change-me-in-env")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if host.strip()]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "http://127.0.0.1,http://localhost").split(",")
+    if origin.strip()
+]
 
 
 # Application definition
