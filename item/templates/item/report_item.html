@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Report Item{% endblock %}
+
+{% block content %}
+<section class="card" style="max-width: 760px; margin: 0 auto;">
+    <h1 class="page-title">Report Item</h1>
+    <p class="page-subtitle" style="margin-bottom: 1rem;">
+        Fill in the item details below. This will appear on the lost and found homepage.
+    </p>
+
+    <form method="post" enctype="multipart/form-data" style="display: grid; gap: 0.9rem;">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div style="color: #b3382b;">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div>
+            <label for="{{ form.category.id_for_label }}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Category</label>
+            {{ form.category }}
+            <div style="color:#b3382b; font-size:0.9rem;">{{ form.category.errors }}</div>
+        </div>
+
+        <div>
+            <label for="{{ form.name.id_for_label }}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Item Name</label>
+            {{ form.name }}
+            <div style="color:#b3382b; font-size:0.9rem;">{{ form.name.errors }}</div>
+        </div>
+
+        <div>
+            <label for="{{ form.description.id_for_label }}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Description</label>
+            {{ form.description }}
+            <div style="color:#b3382b; font-size:0.9rem;">{{ form.description.errors }}</div>
+        </div>
+
+        <div>
+            <label for="{{ form.location.id_for_label }}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Location</label>
+            {{ form.location }}
+            <div style="color:#b3382b; font-size:0.9rem;">{{ form.location.errors }}</div>
+        </div>
+
+        <div style="display:grid; gap:0.9rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div>
+                <label for="{{ form.date_lost_or_found.id_for_label }}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Date</label>
+                {{ form.date_lost_or_found }}
+                <div style="color:#b3382b; font-size:0.9rem;">{{ form.date_lost_or_found.errors }}</div>
+            </div>
+            <div>
+                <label for="{{ form.status.id_for_label }}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Status</label>
+                {{ form.status }}
+                <div style="color:#b3382b; font-size:0.9rem;">{{ form.status.errors }}</div>
+            </div>
+        </div>
+
+        <div>
+            <label for="{{ form.image.id_for_label }}" style="display:block; margin-bottom:0.35rem; font-weight:600;">Image (Optional)</label>
+            {{ form.image }}
+            <div style="color:#b3382b; font-size:0.9rem;">{{ form.image.errors }}</div>
+        </div>
+
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.3rem;">
+            <button type="submit" class="btn">Submit Report</button>
+            <a href="/" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</section>
+
+<style>
+    #id_category,
+    #id_name,
+    #id_description,
+    #id_location,
+    #id_date_lost_or_found,
+    #id_status,
+    #id_image {
+        width: 100%;
+        padding: 0.65rem;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font: inherit;
+        background: #fff;
+    }
+</style>
+{% endblock %}

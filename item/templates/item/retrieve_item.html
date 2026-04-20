@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Retrieve Item{% endblock %}
+
+{% block content %}
+<section class="mb-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h1 class="mb-2 text-2xl font-bold text-slate-800">Retrieve Item</h1>
+    <p class="mb-4 text-slate-600">Search found items and submit a claim request if one belongs to you.</p>
+
+    {% if messages %}
+    <div class="mb-4 space-y-2">
+        {% for message in messages %}
+        <div class="rounded-lg px-3 py-2 text-sm {% if message.tags == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-rose-50 text-rose-700 border border-rose-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="get" class="mb-4 flex flex-wrap gap-2">
+        <input type="text" name="q" value="{{ search }}" placeholder="Search by item name or location" class="min-w-[220px] flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm">
+        <button type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Search</button>
+    </form>
+
+    <div class="grid gap-3 md:grid-cols-2">
+        {% for item in items %}
+        <article class="rounded-xl border border-slate-200 p-4">
+            <div class="mb-3 flex items-start gap-3">
+                <div class="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="h-full w-full object-contain">
+                    {% else %}
+                    <div class="flex h-full w-full items-center justify-center text-xs text-slate-400">No Image</div>
+                    {% endif %}
+                </div>
+                <div>
+                    <h3 class="font-semibold text-slate-800">{{ item.name }}</h3>
+                    <p class="text-xs text-slate-500">{{ item.category.name }} | {{ item.location }}</p>
+                </div>
+            </div>
+            <p class="mb-3 text-sm text-slate-600">{{ item.description|default:"No description provided."|truncatechars:120 }}</p>
+
+            <form method="post" class="grid gap-2">
+                {% csrf_token %}
+                <input type="hidden" name="item_id" value="{{ item.id }}">
+                <textarea name="claim_note" rows="2" placeholder="Describe why this item is yours..." class="rounded-lg border border-slate-300 px-3 py-2 text-sm"></textarea>
+                <button type="submit" class="rounded-lg bg-slate-800 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-900">Request Retrieval</button>
+            </form>
+        </article>
+        {% empty %}
+        <article class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+            No found items are available right now.
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

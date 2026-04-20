@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Login page{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background:
+            linear-gradient(rgba(8, 14, 24, 0.55), rgba(8, 14, 24, 0.55)),
+            url("{% static 'core/images/login-bg.png' %}") center center / cover no-repeat fixed;
+    }
+</style>
+<section class="card" style="max-width: 460px; margin: 0 auto;">
+    <h1 class="page-title">Login</h1>
+    <p class="page-subtitle" style="margin-bottom: 1rem;">Log in to your account to manage your lost and found reports.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {% if error_message %}
+        <p style="color: #b3382b; margin-top: 0;">{{ error_message }}</p>
+        {% if show_signup_prompt %}
+        <p style="margin-top: 0.3rem;">
+            <a href="/signup/" style="color: var(--primary-dark); font-weight: 600; text-decoration: none;">Signup</a>
+        </p>
+        {% endif %}
+        {% endif %}
+
+        <label for="id_matric_number" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">Matric Number</label>
+        <input id="id_matric_number" name="matric_number" type="text" required pattern="^(BU\d{2}[A-Z]{3}\d{4}|[A-Za-z][A-Za-z0-9_]*)$" title="Use BU23CSC1109 format or an admin username like admin2" style="width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.35rem;">
+        <small style="display: block; color: #5b6775; margin-bottom: 0.85rem;">Input your matric number, or admin username</small>
+
+        <label for="id_password" style="display: block; margin-bottom: 0.35rem; font-weight: 600;">Password</label>
+        <input id="id_password" name="password" type="password" minlength="4" required style="width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.35rem;">
+        <small style="display: block; color: #5b6775; margin-bottom: 1rem;">Minimum 4 characters.</small>
+
+        <button type="submit" class="btn" style="width: 100%;">Login</button>
+    </form>
+</section>
+{% endblock %}
