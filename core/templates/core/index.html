@@ -4,7 +4,8 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-<section class="mx-auto mb-5 max-w-5xl overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 px-5 py-7 text-white shadow-sm sm:px-6 sm:py-8">
+<div class="mobile-page-stack">
+<section class="homepage-panel mx-auto mb-5 max-w-5xl overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 px-5 py-7 text-white shadow-sm sm:px-6 sm:py-8">
     <div class="flex flex-wrap items-end justify-between gap-4">
         <div class="max-w-2xl">
             <p class="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-100">BBSF Campus Portal</p>
@@ -22,7 +23,7 @@
     </div>
 </section>
 
-<section class="mx-auto mb-5 grid max-w-5xl gap-3 min-[520px]:grid-cols-2">
+<section class="homepage-panel mx-auto mb-5 grid max-w-5xl gap-3 min-[520px]:grid-cols-2">
     <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Available Items</p>
         <p class="mt-1 text-3xl font-bold text-slate-800">{{ item_count }}</p>
@@ -33,7 +34,7 @@
     </article>
 </section>
 
-<section class="mx-auto mb-5 max-w-5xl rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+<section class="homepage-panel mx-auto mb-5 max-w-5xl rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
     <h2 class="mb-3 text-lg font-semibold text-slate-800">Browse by Category</h2>
     <div class="flex flex-wrap gap-2">
         <a href="/" class="rounded-full border px-3 py-1 text-sm {% if not selected_category %}border-blue-300 bg-blue-50 text-blue-700{% else %}border-slate-300 text-slate-700{% endif %}">All</a>
@@ -47,7 +48,7 @@
     </div>
 </section>
 
-<section class="mx-auto mb-5 max-w-5xl">
+<section class="homepage-panel mx-auto mb-5 max-w-5xl">
     <div class="mb-3 flex flex-col gap-3 min-[560px]:flex-row min-[560px]:items-center min-[560px]:justify-between">
         <h2 class="text-lg font-semibold text-slate-800">Recent Reports</h2>
         <form method="get" class="flex w-full gap-2 min-[560px]:max-w-md">
@@ -64,7 +65,7 @@
     <div id="reports-slider" class="reports-scroller relative max-w-full overflow-x-auto rounded-2xl border border-slate-200 bg-white/70 p-2">
         <div class="flex w-max max-w-none gap-3">
             {% for item in recent_items %}
-            <article class="report-card w-[min(460px,calc(100vw-3.5rem))] min-h-[280px] rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <article class="report-card w-[min(460px,calc(100vw-4.5rem))] min-h-[280px] rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
                 <div class="mb-3 flex items-start gap-3">
                     <div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
                         {% if item.image %}
@@ -95,6 +96,10 @@
     <style>
         #reports-slider {
             scrollbar-width: thin;
+        }
+
+        .mobile-page-stack {
+            width: 100%;
         }
 
         #reports-slider::-webkit-scrollbar {
@@ -138,6 +143,16 @@
         }
 
         @media (max-width: 640px) {
+            .homepage-panel {
+                width: calc(100% - 0.5rem);
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            #reports-slider {
+                width: 100%;
+            }
+
             .reports-scroller::before,
             .reports-scroller::after {
                 width: 28px;
@@ -179,7 +194,7 @@
     </script>
 </section>
 
-<section class="mx-auto grid max-w-5xl gap-3 md:grid-cols-2">
+<section class="homepage-panel mx-auto grid max-w-5xl gap-3 md:grid-cols-2">
     <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <h2 class="mb-3 text-lg font-semibold text-slate-800">Lost Items</h2>
         <ul class="space-y-2 text-sm text-slate-600">
@@ -201,4 +216,5 @@
         </ul>
     </article>
 </section>
+</div>
 {% endblock %}
