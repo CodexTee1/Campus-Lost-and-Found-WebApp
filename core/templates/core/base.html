@@ -22,6 +22,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            overflow-x: hidden;
+        }
+
         body {
             margin: 0;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -31,11 +35,13 @@
                 radial-gradient(circle at 15% 90%, rgba(15, 107, 95, 0.14), transparent 30%),
                 var(--bg);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .container {
-            width: min(1000px, 92%);
+            width: min(1000px, calc(100% - 2rem));
             margin: 0 auto;
+            min-width: 0;
         }
 
         nav {
@@ -73,6 +79,7 @@
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .nav-links a {
@@ -91,6 +98,7 @@
 
         main {
             padding: 2rem 0 3rem;
+            min-width: 0;
         }
 
         .card {
@@ -99,6 +107,7 @@
             border-radius: 16px;
             box-shadow: var(--shadow);
             padding: 1.5rem;
+            max-width: 100%;
         }
 
         .section-gap {
@@ -314,12 +323,45 @@
         }
 
         @media (max-width: 640px) {
+            .container {
+                width: min(100% - 1.5rem, 1000px);
+            }
+
+            main {
+                padding: 1rem 0 2rem;
+            }
+
+            .nav-inner {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 0.75rem 0;
+            }
+
             .brand {
                 font-size: 1rem;
+                max-width: 100%;
+            }
+
+            .brand img {
+                width: 34px;
+                height: 34px;
+            }
+
+            .nav-links {
+                width: 100%;
+                gap: 0.35rem;
+                justify-content: flex-start;
+            }
+
+            .nav-links a {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.82rem;
             }
 
             .card {
                 padding: 1rem;
+                border-radius: 12px;
             }
 
             .item-card {
@@ -356,7 +398,11 @@
                 <a href="/signup/">Sign up</a>
                 {% endif %}
                 {% if request.path != '/login/' and request.path != '/signin/' and request.path != '/signup/' %}
-                <a href="/login/">Logout</a>
+                    {% if request.user.is_authenticated %}
+                    <a href="/logout/">Logout</a>
+                    {% else %}
+                    <a href="/login/">Login</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
