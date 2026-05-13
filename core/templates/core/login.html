@@ -19,9 +19,47 @@
         transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
+    .auth-input::placeholder {
+        color: #9caec3;
+        opacity: 0.82;
+    }
+
     .auth-input:focus {
         border-color: var(--primary);
         box-shadow: 0 0 0 4px rgba(17, 81, 220, 0.12);
+    }
+
+    .auth-submit {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .auth-submit::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    .auth-submit.is-loading {
+        pointer-events: none;
+        color: rgba(255, 255, 255, 0.84);
+    }
+
+    .auth-submit.is-loading::after {
+        opacity: 1;
+        animation: auth-progress 0.9s linear infinite;
+    }
+
+    @keyframes auth-progress {
+        to {
+            transform: translateX(100%);
+        }
     }
 
     @media (max-width: 640px) {
@@ -32,11 +70,11 @@
 </style>
 <section class="card auth-card mx-auto max-w-[460px] rounded-2xl border-white/70 bg-white/95 px-6 py-7 sm:px-8">
     <div class="mb-6 text-center">
-        <h1 class="page-title">Login</h1>
+        <h1 class="page-title text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Login</h1>
         <p class="page-subtitle mx-auto">Log in to your account to manage your lost and found reports.</p>
     </div>
 
-    <form method="post" class="space-y-4">
+    <form method="post" class="auth-form space-y-4">
         {% csrf_token %}
         {% if error_message %}
         <p class="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">{{ error_message }}</p>
@@ -49,15 +87,25 @@
 
         <div>
             <label for="id_matric_number" class="mb-2 block text-sm font-semibold text-slate-800">Matric Number</label>
-            <input id="id_matric_number" class="auth-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none placeholder:text-slate-400" placeholder="Input your matriculation number" name="matric_number" type="text" required pattern="^(BU\d{2}[A-Z]{3}\d{4}|[A-Za-z][A-Za-z0-9_]*)$" title="Use BU23CSC1109 format or an admin username like admin2">
+            <input id="id_matric_number" class="auth-input w-full rounded-xl border border-blue-100 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:bg-white" placeholder="Input your matriculation number" name="matric_number" type="text" required pattern="^(BU\d{2}[A-Z]{3}\d{4}|[A-Za-z][A-Za-z0-9_]*)$" title="Use BU23CSC1109 format or an admin username like admin2">
         </div>
 
         <div>
             <label for="id_password" class="mb-2 block text-sm font-semibold text-slate-800">Password</label>
-            <input id="id_password" class="auth-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none placeholder:text-slate-400" placeholder="Minimum 4 characters" name="password" type="password" minlength="4" required>
+            <input id="id_password" class="auth-input w-full rounded-xl border border-blue-100 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:bg-white" placeholder="Minimum 4 characters" name="password" type="password" minlength="4" required>
         </div>
 
-        <button type="submit" class="btn w-full rounded-xl py-3 text-base">Login</button>
+        <button type="submit" class="btn auth-submit w-full rounded-xl py-3 text-base">Login</button>
     </form>
 </section>
+<script>
+    document.querySelectorAll(".auth-form").forEach((form) => {
+        form.addEventListener("submit", () => {
+            const button = form.querySelector(".auth-submit");
+            if (button) {
+                button.classList.add("is-loading");
+            }
+        });
+    });
+</script>
 {% endblock %}
