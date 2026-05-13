@@ -12,12 +12,12 @@
             <h1 class="mb-2 text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">Lost Something? Found Something?</h1>
             <p class="text-blue-100">Track reports across campus and help items get back to their owners faster.</p>
         </div>
-        <div class="flex flex-wrap gap-2">
-            <a href="/items/report/" class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-50">Report Item</a>
+        <div class="dashboard-actions flex w-full flex-col gap-2 min-[420px]:w-auto min-[420px]:flex-row">
+            <a href="/items/report/" class="dashboard-action inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50">Report Item</a>
             {% if request.user.is_staff %}
-            <a href="/admin/" class="rounded-lg border border-white/60 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Open Admin</a>
+            <a href="/admin/" class="dashboard-action inline-flex min-h-11 items-center justify-center rounded-xl border border-white/60 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">Open Admin</a>
             {% else %}
-            <a href="/items/retrieve/" class="rounded-lg border border-white/60 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Retrieve Item</a>
+            <a href="/items/retrieve/" class="dashboard-action inline-flex min-h-11 items-center justify-center rounded-xl border border-white/60 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">Retrieve Item</a>
             {% endif %}
         </div>
     </div>
@@ -147,6 +147,14 @@
                 width: calc(100% - 0.5rem);
                 margin-left: auto;
                 margin-right: auto;
+            }
+
+            .dashboard-actions {
+                margin-top: 0.25rem;
+            }
+
+            .dashboard-action {
+                width: 100%;
             }
 
             #reports-slider {

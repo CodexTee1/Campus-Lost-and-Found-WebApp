@@ -56,6 +56,62 @@
         animation: auth-progress 0.9s linear infinite;
     }
 
+    .signup-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(8, 14, 24, 0.48);
+        backdrop-filter: blur(12px);
+    }
+
+    .signup-modal.is-open {
+        display: flex;
+    }
+
+    .signup-modal-card {
+        position: relative;
+        width: min(100%, 440px);
+        overflow: hidden;
+        border: 1px solid rgba(191, 219, 254, 0.65);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 24px 70px rgba(8, 14, 24, 0.32);
+        padding: 1.6rem;
+    }
+
+    .signup-modal-card::before,
+    .signup-modal-card::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        filter: blur(20px);
+        opacity: 0.24;
+        pointer-events: none;
+    }
+
+    .signup-modal-card::before {
+        top: -80px;
+        right: -55px;
+        background: #1151dc;
+    }
+
+    .signup-modal-card::after {
+        bottom: -90px;
+        left: -60px;
+        background: #38bdf8;
+    }
+
+    .signup-modal-content {
+        position: relative;
+        z-index: 1;
+    }
+
     @keyframes auth-progress {
         to {
             transform: translateX(100%);
@@ -70,19 +126,14 @@
 </style>
 <section class="card auth-card mx-auto max-w-[460px] rounded-2xl border-white/70 bg-white/95 px-6 py-7 sm:px-8">
     <div class="mb-6 text-center">
-        <h1 class="page-title text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Login</h1>
+        <h1 class="page-title text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Login</h1>
         <p class="page-subtitle mx-auto">Log in to your account to manage your lost and found reports.</p>
     </div>
 
     <form method="post" class="auth-form space-y-4">
         {% csrf_token %}
-        {% if error_message %}
+        {% if error_message and not show_signup_prompt %}
         <p class="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">{{ error_message }}</p>
-        {% if show_signup_prompt %}
-        <p class="text-center text-sm">
-            <a href="/signup/" class="font-semibold text-blue-700 no-underline hover:text-blue-800">Signup</a>
-        </p>
-        {% endif %}
         {% endif %}
 
         <div>
@@ -98,6 +149,36 @@
         <button type="submit" class="btn auth-submit w-full rounded-xl py-3 text-base">Login</button>
     </form>
 </section>
+
+<div id="signup-modal" class="signup-modal{% if show_signup_prompt %} is-open{% endif %}" aria-hidden="{% if show_signup_prompt %}false{% else %}true{% endif %}">
+    <div class="signup-modal-card">
+        <div class="signup-modal-content">
+            <div class="mb-5 flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-semibold tracking-tight text-slate-900">Create Account</h2>
+                    <p class="mt-1 text-sm leading-6 text-slate-600">{{ error_message|default:"Sign up to continue." }}</p>
+                </div>
+                <button type="button" data-close-signup class="rounded-full border border-blue-100 bg-white/80 px-3 py-1 text-lg leading-none text-slate-500 hover:text-slate-800" aria-label="Close signup popup">&times;</button>
+            </div>
+
+            <form method="post" action="/signup/" class="auth-form space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label for="modal_matric_number" class="mb-2 block text-sm font-semibold text-slate-800">Matric Number</label>
+                    <input id="modal_matric_number" class="auth-input w-full rounded-xl border border-blue-100 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:bg-white" placeholder="Input your matriculation number" name="matric_number" type="text" required pattern="^BU\d{2}[A-Z]{3}\d{4}$">
+                </div>
+
+                <div>
+                    <label for="modal_password" class="mb-2 block text-sm font-semibold text-slate-800">Password</label>
+                    <input id="modal_password" class="auth-input w-full rounded-xl border border-blue-100 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:bg-white" placeholder="Minimum 4 characters" name="password" type="password" minlength="4" required>
+                </div>
+
+                <button type="submit" class="btn auth-submit w-full rounded-xl py-3 text-base">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     document.querySelectorAll(".auth-form").forEach((form) => {
         form.addEventListener("submit", () => {
@@ -107,5 +188,22 @@
             }
         });
     });
+
+    const signupModal = document.getElementById("signup-modal");
+    if (signupModal) {
+        signupModal.querySelectorAll("[data-close-signup]").forEach((button) => {
+            button.addEventListener("click", () => {
+                signupModal.classList.remove("is-open");
+                signupModal.setAttribute("aria-hidden", "true");
+            });
+        });
+
+        signupModal.addEventListener("click", (event) => {
+            if (event.target === signupModal) {
+                signupModal.classList.remove("is-open");
+                signupModal.setAttribute("aria-hidden", "true");
+            }
+        });
+    }
 </script>
 {% endblock %}
