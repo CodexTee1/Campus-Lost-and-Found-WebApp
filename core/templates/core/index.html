@@ -4,6 +4,28 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
+<style>
+    body {
+        background:
+            radial-gradient(circle at 88% 8%, rgba(17, 81, 220, 0.18), transparent 30%),
+            radial-gradient(circle at 8% 18%, rgba(56, 189, 248, 0.16), transparent 28%),
+            radial-gradient(circle at 50% 95%, rgba(191, 219, 254, 0.42), transparent 36%),
+            #f8fbff;
+    }
+
+    .dashboard-action-primary:hover {
+        background: #1151dc;
+        color: #ffffff;
+        box-shadow: 0 14px 30px rgba(17, 81, 220, 0.22);
+    }
+
+    .dashboard-action-outline:hover {
+        background: #ffffff;
+        color: #1151dc;
+        border-color: #ffffff;
+        box-shadow: 0 14px 30px rgba(8, 14, 24, 0.14);
+    }
+</style>
 <div class="mobile-page-stack">
 <section class="homepage-panel mx-auto mb-5 max-w-5xl overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 px-5 py-7 text-white shadow-sm sm:px-6 sm:py-8">
     <div class="flex flex-wrap items-end justify-between gap-4">
@@ -13,11 +35,11 @@
             <p class="text-blue-100">Track reports across campus and help items get back to their owners faster.</p>
         </div>
         <div class="dashboard-actions flex w-full flex-col gap-2 min-[420px]:w-auto min-[420px]:flex-row">
-            <a href="/items/report/" class="dashboard-action inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50">Report Item</a>
+            <a href="/items/report/" class="dashboard-action dashboard-action-primary inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-blue-700 shadow-sm transition">Report Item</a>
             {% if request.user.is_staff %}
-            <a href="/admin/" class="dashboard-action inline-flex min-h-11 items-center justify-center rounded-xl border border-white/60 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">Open Admin</a>
+            <a href="/admin/" class="dashboard-action dashboard-action-outline inline-flex min-h-11 items-center justify-center rounded-xl border border-white/60 px-5 py-2.5 text-sm font-semibold text-white transition">Open Admin</a>
             {% else %}
-            <a href="/items/retrieve/" class="dashboard-action inline-flex min-h-11 items-center justify-center rounded-xl border border-white/60 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">Retrieve Item</a>
+            <a href="/items/retrieve/" class="dashboard-action dashboard-action-outline inline-flex min-h-11 items-center justify-center rounded-xl border border-white/60 px-5 py-2.5 text-sm font-semibold text-white transition">Retrieve Item</a>
             {% endif %}
         </div>
     </div>
